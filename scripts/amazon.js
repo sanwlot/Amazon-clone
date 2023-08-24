@@ -30,7 +30,7 @@ const products = [
 
 let productsHTML = ''
 
-const productsGrid = document.querySelector('.products-grid')
+const productsGrid = document.querySelector('.js-products-grid')
 
 products.forEach((product) => {
   productsHTML += `
@@ -53,7 +53,7 @@ products.forEach((product) => {
       </div>
 
       <div class="product-price">
-        $${product.priceCents / 100}
+        $${(product.priceCents / 100).toFixed(2)}
       </div>
 
       <div class="product-quantity-container">
