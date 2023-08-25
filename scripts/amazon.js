@@ -1,6 +1,5 @@
-let productsHTML = ''
-
 const productsGrid = document.querySelector('.js-products-grid')
+let productsHTML = ''
 
 products.forEach((product) => {   // products array is coming from 'products.js'
   productsHTML += `
