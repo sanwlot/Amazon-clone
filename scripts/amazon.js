@@ -27,7 +27,7 @@ products.forEach((product) => {   // products array is coming from 'products.js'
       </div>
 
       <div class="product-quantity-container">
-        <select>
+        <select class="js-quantity-selector-${product.id}">
           <option selected value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -63,6 +63,10 @@ document.querySelectorAll('.js-add-to-cart') // selecting all of the 'add to car
     button.addEventListener('click', () => { // setting up click event listener on all of the 'add to cart' buttons
       const productId = button.dataset.productId // to find the id of the product related to the button we used html attribute 'data- '
 
+      // select input 
+      const selectInput = document.querySelector(`.js-quantity-selector-${productId}`)
+
+
       let matchingItem
       let quantityCounter = 0
 
@@ -70,19 +74,19 @@ document.querySelectorAll('.js-add-to-cart') // selecting all of the 'add to car
         if (productId === item.productId) {
           matchingItem = item // first we find the matching item
         }
-        // calculate the quantity of item
-        quantityCounter += item.quantity 
+        quantityCounter += item.quantity // calculate the quantity of item
 
       })
 
       if (matchingItem) { // If there is matching item then it will increase the quantity of item
-        matchingItem.quantity++
+        matchingItem.quantity += Number(selectInput.value) // adding quantity according to 'select' input value even when it is duplicate item
       } else {
         cart.push({ // if not duplicate then it will push the new item object in the cart array
           productId: productId,
-          quantity: 1
+          quantity: Number(selectInput.value) // it addes quantity to the cart array according to the 'select' input's value
         })
-      }    
+      }   
+      console.log(cart)
 
       let cartQuantity = 0 // total items in the cart calculator
 
@@ -94,4 +98,5 @@ document.querySelectorAll('.js-add-to-cart') // selecting all of the 'add to car
       document.querySelector('.js-cart-quantity')
         .textContent = cartQuantity
     })
+
   })
