@@ -83,6 +83,15 @@ document.querySelectorAll('.js-add-to-cart') // selecting all of the 'add to car
           quantity: 1
         })
       }    
-      console.log(cart)
+
+      let cartQuantity = 0 // total items in the cart calculator
+
+      cart.forEach((item) => {
+        cartQuantity += item.quantity
+      })
+
+      //DOM for cart total quantity
+      document.querySelector('.js-cart-quantity')
+        .textContent = cartQuantity
     })
   })
