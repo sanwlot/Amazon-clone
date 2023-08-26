@@ -1,8 +1,9 @@
-const productsGrid = document.querySelector('.js-products-grid') // in that we will render all of our products
-let productsHTML = '' // this will have all the html that we r going to dynamically generate
+const productsGrid = document.querySelector(".js-products-grid"); // in that we will render all of our products
+let productsHTML = ""; // this will have all the html that we r going to dynamically generate
 
 // looping products array to dynamically generate html for rendering
-products.forEach((product) => {   // products array is coming from 'products.js'
+products.forEach((product) => {
+  // products array is coming from 'products.js'
   productsHTML += `
       <div class="product-container">
       <div class="product-image-container">
@@ -48,55 +49,60 @@ products.forEach((product) => {   // products array is coming from 'products.js'
         Added
       </div>
 
-      <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${product.id}">
+      <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${
+        product.id
+      }">
         Add to Cart
       </button>
     </div>
   `;
 });
 
+productsGrid.innerHTML = productsHTML;
 
-productsGrid.innerHTML = productsHTML
+document
+  .querySelectorAll(".js-add-to-cart") // selecting all of the 'add to cart' buttons
+  .forEach((button) => {
+    // looping those selected buttons
+    button.addEventListener("click", () => {
+      // setting up click event listener on all of the 'add to cart' buttons
+      const productId = button.dataset.productId; // to find the id of the product related to the button we used html attribute 'data- '
 
-document.querySelectorAll('.js-add-to-cart') // selecting all of the 'add to cart' buttons
-  .forEach(button => { // looping those selected buttons
-    button.addEventListener('click', () => { // setting up click event listener on all of the 'add to cart' buttons
-      const productId = button.dataset.productId // to find the id of the product related to the button we used html attribute 'data- '
+      // select input
+      const selectInput = document.querySelector(
+        `.js-quantity-selector-${productId}`
+      );
 
-      // select input 
-      const selectInput = document.querySelector(`.js-quantity-selector-${productId}`)
-
-
-      let matchingItem
-      let quantityCounter = 0
-
-      cart.forEach((item) => { // handling the case when same item is added to cart multiple times, thus incresing the quantity
-        if (productId === item.productId) {
-          matchingItem = item // first we find the matching item
-        }
-        quantityCounter += item.quantity // calculate the quantity of item
-
-      })
-
-      if (matchingItem) { // If there is matching item then it will increase the quantity of item
-        matchingItem.quantity += Number(selectInput.value) // adding quantity according to 'select' input value even when it is duplicate item
-      } else {
-        cart.push({ // if not duplicate then it will push the new item object in the cart array
-          productId: productId,
-          quantity: Number(selectInput.value) // it addes quantity to the cart array according to the 'select' input's value
-        })
-      }   
-      console.log(cart)
-
-      let cartQuantity = 0 // total items in the cart calculator
+      let matchingItem;
+      let quantityCounter = 0;
 
       cart.forEach((item) => {
-        cartQuantity += item.quantity
-      })
+        // handling the case when same item is added to cart multiple times, thus incresing the quantity
+        if (productId === item.productId) {
+          matchingItem = item; // first we find the matching item
+        }
+        quantityCounter += item.quantity; // calculate the quantity of item
+      });
+
+      if (matchingItem) {
+        // If there is matching item then it will increase the quantity of item
+        matchingItem.quantity += Number(selectInput.value); // adding quantity according to 'select' input value even when it is duplicate item
+      } else {
+        cart.push({
+          // if not duplicate then it will push the new item object in the cart array
+          productId: productId,
+          quantity: Number(selectInput.value), // it addes quantity to the cart array according to the 'select' input's value
+        });
+      }
+      console.log(cart);
+
+      let cartQuantity = 0; // total items in the cart calculator
+
+      cart.forEach((item) => {
+        cartQuantity += item.quantity;
+      });
 
       //DOM for cart total quantity
-      document.querySelector('.js-cart-quantity')
-        .textContent = cartQuantity
-    })
-
-  })
+      document.querySelector(".js-cart-quantity").textContent = cartQuantity;
+    });
+  });
