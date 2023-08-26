@@ -64,11 +64,15 @@ document.querySelectorAll('.js-add-to-cart') // selecting all of the 'add to car
       const productId = button.dataset.productId // to find the id of the product related to the button we used html attribute 'data- '
 
       let matchingItem
+      let quantityCounter = 0
 
       cart.forEach((item) => { // handling the case when same item is added to cart multiple times, thus incresing the quantity
         if (productId === item.productId) {
           matchingItem = item // first we find the matching item
         }
+        // calculate the quantity of item
+        quantityCounter += item.quantity 
+
       })
 
       if (matchingItem) { // If there is matching item then it will increase the quantity of item
