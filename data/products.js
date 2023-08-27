@@ -656,5 +656,36 @@ const products = [
       "apparel",
       "mens"
     ]
+  },
+  {
+    id: "a1",
+    image: "images/products/shoes.jpg",
+    name: "Manju's favourite pink shoes",
+    rating: {
+      stars: 4.5,
+      count: 6767
+    },
+    priceCents: 3000,
+    keywords: [
+      "shoes",
+      "footwear",
+      "apparel",
+      "womens"
+    ]
+  },
+  {
+    id: "a2",
+    image: "images/products/fertilizer.jpg",
+    name: "Fertilizer for plant growth",
+    rating: {
+      stars: 4,
+      count: 302
+    },
+    priceCents: 240,
+    keywords: [
+      "plant",
+      "fertilizer",
+      "garden",
+    ]
   }
 ];
