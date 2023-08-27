@@ -60,6 +60,8 @@ products.forEach((product) => {
 
 productsGrid.innerHTML = productsHTML;
 
+let timerId //  for clearing the setTimer for "added" message after add to cart click
+
 document
   .querySelectorAll(".js-add-to-cart") // selecting all of the 'add to cart' buttons
   .forEach((button) => { // looping those selected buttons
@@ -78,6 +80,11 @@ document
       // For 'added' message when adding items to cart 
       const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`)
       addedMessage.classList.add('added-to-cart-visible')
+
+      clearTimeout(timerId)
+      timerId = setTimeout(() => { // remove the "Added" message after 2 seconds
+        addedMessage.classList.remove('added-to-cart-visible')
+      }, 2000);
 
       cart.forEach((item) => { // handling the case when same item is added to cart multiple times, thus incresing the quantity
         if (productId === item.productId) {
