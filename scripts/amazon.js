@@ -1,3 +1,5 @@
+import { cart } from "../data/cart.js";
+
 const productsGrid = document.querySelector(".js-products-grid"); // in that we will render all of our products
 let productsHTML = ""; // this will have all the html that we are going to dynamically generate
 
@@ -101,7 +103,7 @@ document
           quantity: Number(selectInput.value), // it addes quantity to the cart array according to the 'select' input's value
         });
       }
-      console.log(cart);
+      // console.log(cart);
 
       let cartQuantity = 0; // total items in the cart calculator
       cart.forEach((item) => {
