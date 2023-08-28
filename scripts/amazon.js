@@ -1,4 +1,5 @@
 import { cart } from "../data/cart.js";
+import { products } from "../data/products.js";
 
 const productsGrid = document.querySelector(".js-products-grid"); // in that we will render all of our products
 let productsHTML = ""; // this will have all the html that we are going to dynamically generate
