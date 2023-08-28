@@ -1,5 +1,5 @@
-import { cart, addToCart } from "../data/cart.js";
-import { products } from "../data/products.js"; 
+import {cart, addToCart} from "../data/cart.js";
+import {products} from "../data/products.js"; 
 
 const productsGrid = document.querySelector(".js-products-grid"); // in that we will render all of our products
 let productsHTML = ""; // this will have all the html that we are going to dynamically generate
@@ -67,34 +67,32 @@ let timerId //  for clearing the setTimer for "added" message after add to cart 
 
 function updateCartQuantity() {
   let cartQuantity = 0; // total items in the cart calculator
-      
-      cart.forEach((cartItem) => {
-        cartQuantity += cartItem.quantity;
-      });
-
-      //DOM for cart total quantity
-      document.querySelector(".js-cart-quantity").textContent = cartQuantity;
+    cart.forEach((cartItem) => {
+      cartQuantity += cartItem.quantity;
+    });
+    //DOM for cart total quantity
+    document.querySelector(".js-cart-quantity").textContent = cartQuantity;
 }
 
-document
-  .querySelectorAll(".js-add-to-cart") // selecting all of the 'add to cart' buttons
+function addedMessageTimer(addedMessage) {
+  clearTimeout(timerId)
+    timerId = setTimeout(() => { // remove the "Added" message after 2 seconds
+      addedMessage.classList.remove('added-to-cart-visible')
+    }, 2000);
+}
+
+document.querySelectorAll(".js-add-to-cart") // selecting all of the 'add to cart' buttons
   .forEach((button) => { // looping those selected buttons
     button.addEventListener("click", () => { // setting up click event listener on all of the 'add to cart' buttons
       // to find the id of the product related to the button we used html attribute 'data- '
       const {productId} = button.dataset
 
       addToCart(productId)
+      updateCartQuantity()
 
       // For 'added' message when adding items to cart 
       const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`)
       addedMessage.classList.add('added-to-cart-visible')
-
-      clearTimeout(timerId)
-      timerId = setTimeout(() => { // remove the "Added" message after 2 seconds
-        addedMessage.classList.remove('added-to-cart-visible')
-      }, 2000);
-
-      updateCartQuantity()
-      
+      addedMessageTimer(addedMessage)
     });
   });
