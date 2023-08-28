@@ -1,5 +1,5 @@
-import { cart } from "../data/cart.js";
-import { products } from "../data/products.js";
+import { cart, addToCart } from "../data/cart.js";
+import { products } from "../data/products.js"; 
 
 const productsGrid = document.querySelector(".js-products-grid"); // in that we will render all of our products
 let productsHTML = ""; // this will have all the html that we are going to dynamically generate
@@ -65,20 +65,25 @@ productsGrid.innerHTML = productsHTML;
 
 let timerId //  for clearing the setTimer for "added" message after add to cart click
 
+function updateCartQuantity() {
+  let cartQuantity = 0; // total items in the cart calculator
+      
+      cart.forEach((cartItem) => {
+        cartQuantity += cartItem.quantity;
+      });
+
+      //DOM for cart total quantity
+      document.querySelector(".js-cart-quantity").textContent = cartQuantity;
+}
+
 document
   .querySelectorAll(".js-add-to-cart") // selecting all of the 'add to cart' buttons
   .forEach((button) => { // looping those selected buttons
     button.addEventListener("click", () => { // setting up click event listener on all of the 'add to cart' buttons
-      // const productId = button.dataset.productId; // to find the id of the product related to the button we used html attribute 'data- '
+      // to find the id of the product related to the button we used html attribute 'data- '
       const {productId} = button.dataset
 
-      // select input
-      const selectInput = document.querySelector(
-        `.js-quantity-selector-${productId}`
-      );
-
-      let matchingItem;
-      let quantityCounter = 0;
+      addToCart(productId)
 
       // For 'added' message when adding items to cart 
       const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`)
@@ -89,29 +94,7 @@ document
         addedMessage.classList.remove('added-to-cart-visible')
       }, 2000);
 
-      cart.forEach((item) => { // handling the case when same item is added to cart multiple times, thus incresing the quantity
-        if (productId === item.productId) {
-          matchingItem = item; // first we find the matching item
-        }
-        quantityCounter += item.quantity; // calculate the quantity of item
-      });
-
-      if (matchingItem) { // If there is matching item then it will increase the quantity of item
-        matchingItem.quantity += Number(selectInput.value); // adding quantity according to 'select' input value even when it is duplicate item
-      } else {
-        cart.push({ // if not duplicate then it will push the new item object in the cart array
-          productId,
-          quantity: Number(selectInput.value), // it addes quantity to the cart array according to the 'select' input's value
-        });
-      }
-      // console.log(cart);
-
-      let cartQuantity = 0; // total items in the cart calculator
-      cart.forEach((item) => {
-        cartQuantity += item.quantity;
-      });
-
-      //DOM for cart total quantity
-      document.querySelector(".js-cart-quantity").textContent = cartQuantity;
+      updateCartQuantity()
+      
     });
   });
