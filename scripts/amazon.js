@@ -1,5 +1,6 @@
 import {cart, addToCart} from "../data/cart.js";
 import {products} from "../data/products.js"; 
+import { formatCurrency } from "./utils/money.js";
 
 const productsGrid = document.querySelector(".js-products-grid"); // in that we will render all of our products
 let productsHTML = ""; // this will have all the html that we are going to dynamically generate
@@ -27,7 +28,7 @@ products.forEach((product) => {
       </div>
 
       <div class="product-price">
-        $${(product.priceCents / 100).toFixed(2)}
+        $${formatCurrency(product.priceCents)}
       </div>
 
       <div class="product-quantity-container">

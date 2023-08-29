@@ -1,5 +1,6 @@
 import { cart } from "../data/cart.js"
 import { products } from "../data/products.js"
+import { formatCurrency } from "./utils/money.js"
 
 let cartSummaryHTML = ''
 
@@ -7,7 +8,7 @@ let cartSummaryHTML = ''
     const productId = cartItem.productId
 
     let matchingProduct
-
+    // normalizing the the data, to get other product information using productId
     products.forEach(product => {
         if (product.id === productId) {
             matchingProduct = product
@@ -29,7 +30,7 @@ let cartSummaryHTML = ''
                 ${matchingProduct.name}
                 </div>
                 <div class="product-price">
-                $${matchingProduct.priceCents / 100}
+                $${formatCurrency(matchingProduct.priceCents) }
                 </div>
                 <div class="product-quantity">
                 <span>
