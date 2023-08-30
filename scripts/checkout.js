@@ -129,12 +129,17 @@ document.querySelectorAll(".save-quantity-link").forEach((link) => {
 
     const quantityInput = document.querySelector(`.js-quantity-input-${productId}`)
     let newQuantity = Number(quantityInput.value)
-    updateQuantity(productId, newQuantity) // imported from cart.js
 
-    const quantityLabel = document.querySelector(`.js-quantity-label-${productId}`)
-    quantityLabel.textContent = newQuantity
+    if (newQuantity > 0 && newQuantity < 1000) {
+      updateQuantity(productId, newQuantity) // imported from cart.js
+      const quantityLabel = document.querySelector(`.js-quantity-label-${productId}`)
+      quantityLabel.textContent = newQuantity
+    }
+
+
 
     updateCheckoutQuantity(checkoutQuantityEl);
+    console.log(cart)
   });
 });
 
