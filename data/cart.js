@@ -13,6 +13,16 @@ function saveToStorage() {
   localStorage.setItem('cart', JSON.stringify(cart))
 }
 
+// to update cartItem quantity when inputed in the checkout
+export function updateQuantity(productId, newQuantity) {
+  cart.forEach(cartItem => {
+    if (cartItem.productId === productId) {
+      cartItem.quantity = newQuantity
+      saveToStorage()
+    }
+  })
+}
+
 export function addToCart(productId) {
     let matchingItem;
     const selectInput = document.querySelector(`.js-quantity-selector-${productId}`);

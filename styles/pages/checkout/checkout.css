@@ -119,6 +119,25 @@
   margin-left: 3px;
 }
 
+.quantity-input {
+  width: 30px;
+} 
+
+/* to keep quantity input and quantity link hidden if not clicked on 'update' */
+.quantity-input, .save-quantity-link {
+  display: none;
+}
+
+/* as we click on 'update' then those hidden elements will display */
+.is-editing-quantity .quantity-input, .is-editing-quantity .save-quantity-link {
+  display: initial;
+}
+
+/* as we click on 'update' then these elements will be hidden */
+.is-editing-quantity .quantity-label, .is-editing-quantity .update-quantity-link {
+  display: none;
+}
+
 @media (max-width: 1000px) {
   .delivery-options {
     /* grid-column: 1 means this element will be placed

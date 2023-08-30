@@ -1,8 +1,10 @@
 import {cart, addToCart} from "../data/cart.js";
 import {products} from "../data/products.js"; 
-import { formatCurrency } from "./utils/money.js";
+import {formatCurrency} from "./utils/money.js";
 
 const productsGrid = document.querySelector(".js-products-grid"); // in that we will render all of our products
+const cartQuantityElement = document.querySelector(".js-cart-quantity")
+
 let productsHTML = ""; // this will have all the html that we are going to dynamically generate
 
 // looping products array to dynamically generate html for rendering
@@ -66,13 +68,13 @@ productsGrid.innerHTML = productsHTML;
 
 let timerId //  for clearing the setTimer for "added" message after add to cart click
 
-function updateCartQuantity() {
+function updateCartQuantity(htmlElment) {
   let cartQuantity = 0; // total items in the cart calculator
     cart.forEach((cartItem) => {
       cartQuantity += cartItem.quantity;
     });
     //DOM for cart total quantity
-    document.querySelector(".js-cart-quantity").textContent = cartQuantity;
+    htmlElment.textContent = cartQuantity;
 }
 
 function addedMessageTimer(addedMessage) {
@@ -89,11 +91,14 @@ document.querySelectorAll(".js-add-to-cart") // selecting all of the 'add to car
       const {productId} = button.dataset
 
       addToCart(productId)
-      updateCartQuantity()
+      updateCartQuantity(cartQuantityElement)
 
       // For 'added' message when adding items to cart 
       const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`)
       addedMessage.classList.add('added-to-cart-visible')
       addedMessageTimer(addedMessage)
     });
-  });
+});
+
+// dom for indicating cart quantity upon page load
+updateCartQuantity(cartQuantityElement)
