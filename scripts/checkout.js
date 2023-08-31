@@ -109,64 +109,40 @@ cart.forEach((cartItem) => {
 // generated HTML using JS and rendered
 document.querySelector(".js-order-summary").innerHTML = cartSummaryHTML;
 
-// update item link
-document.querySelectorAll(".js-update-link").forEach((link) => {
-  link.addEventListener("click", () => {
-    let productId = link.dataset.productId;
-    const container = document.querySelector(`.js-cart-item-container-${productId}`);
-    container.classList.add("is-editing-quantity");
-  });
-});
-
-// save link
-document.querySelectorAll(".save-quantity-link").forEach((link) => {
-  link.addEventListener("click", () => {
+function addIsEditingQuantityClass(link) {
+  let productId = link.dataset.productId;
+  const container = document.querySelector(`.js-cart-item-container-${productId}`);
+  container.classList.add("is-editing-quantity");
+}
+function handleSaveClick(link) {
+  let productId = link.dataset.productId;
+  const container = document.querySelector(`.js-cart-item-container-${productId}`);
+  container.classList.remove("is-editing-quantity");
+  const quantityInput = document.querySelector(`.js-quantity-input-${productId}`) 
+  let newQuantity = Number(quantityInput.value)
+  quantityInputLimit(newQuantity, productId)
+  updateCheckoutQuantity(checkoutQuantityEl);
+}
+function handleQuantityInputOnEnter(event, link) {
+  if (event.key === 'Enter') {
     let productId = link.dataset.productId;
     const container = document.querySelector(`.js-cart-item-container-${productId}`);
     container.classList.remove("is-editing-quantity");
-
-    const quantityInput = document.querySelector(`.js-quantity-input-${productId}`) 
+    const quantityInput = document.querySelector(`.js-quantity-input-${productId}`)
     let newQuantity = Number(quantityInput.value)
-
     quantityInputLimit(newQuantity, productId)
-
     updateCheckoutQuantity(checkoutQuantityEl);
-  });
-});
+  }
+}
+function deleteCartItem(link) {
+  let productId = link.dataset.productId;
 
+  removeFromCart(productId);
+  updateCheckoutQuantity(checkoutQuantityEl);
 
-
-// updating quantity by ENTER key in the 'quantity input'
-document.querySelectorAll(".js-quantity-input").forEach((link) => {
-  link.addEventListener("keypress", (event) => {
-    if (event.key === 'Enter') {
-      let productId = link.dataset.productId;
-      const container = document.querySelector(`.js-cart-item-container-${productId}`);
-      container.classList.remove("is-editing-quantity");
-
-      const quantityInput = document.querySelector(`.js-quantity-input-${productId}`)
-      let newQuantity = Number(quantityInput.value)
-
-      quantityInputLimit(newQuantity, productId)
-
-      updateCheckoutQuantity(checkoutQuantityEl);
-    }
-  });
-});
-
-// delete cart item link
-document.querySelectorAll(".js-delete-link").forEach((link) => {
-  link.addEventListener("click", () => {
-    let productId = link.dataset.productId;
-
-    removeFromCart(productId);
-    updateCheckoutQuantity(checkoutQuantityEl);
-
-    const container = document.querySelector(`.js-cart-item-container-${productId}`);
-    container.remove();
-  });
-});
-
+  const container = document.querySelector(`.js-cart-item-container-${productId}`);
+  container.remove();
+}
 function updateCheckoutQuantity(htmlElment) {
   let cartQuantity = 0; // total items in the cart calculator
   cart.forEach((cartItem) => {
@@ -176,7 +152,6 @@ function updateCheckoutQuantity(htmlElment) {
   //DOM for cart total quantity
   htmlElment.textContent = `${cartQuantity} Items`;
 }
-
 function quantityInputLimit(newQuantity, productId) {
   if (newQuantity > 0 && newQuantity < 1000) {
     updateQuantity(productId, newQuantity) // imported from cart.js
@@ -184,5 +159,25 @@ function quantityInputLimit(newQuantity, productId) {
     quantityLabel.textContent = newQuantity
   }
 }
+
+// update item link
+document.querySelectorAll(".js-update-link").forEach((link) => {
+  link.addEventListener("click", () => addIsEditingQuantityClass(link))
+});
+
+// save link
+document.querySelectorAll(".save-quantity-link").forEach((link) => {
+  link.addEventListener("click", () => handleSaveClick(link))
+});
+
+// updating quantity by ENTER key in the 'quantity input'
+document.querySelectorAll(".js-quantity-input").forEach((link) => {
+  link.addEventListener("keypress", (event) => handleQuantityInputOnEnter(event, link));
+});
+
+// delete cart item link
+document.querySelectorAll(".js-delete-link").forEach((link) => {
+  link.addEventListener("click", () => deleteCartItem(link));
+});
 
 updateCheckoutQuantity(checkoutQuantityEl);
