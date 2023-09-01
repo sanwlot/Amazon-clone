@@ -6,17 +6,18 @@ const checkoutQuantityEl = document.querySelector(".js-checkout-quantity");
 
 let cartSummaryHTML = "";
 
-cart.forEach((cartItem) => {
+cart.forEach(cartItem => {
   const productId = cartItem.productId;
 
   let matchingProduct;
 
   // normalizing the the data, to get other product information using productId
-  products.forEach((product) => {
+  products.forEach(product => {
     if (product.id === productId) {
       matchingProduct = product;
     }
   });
+
   cartSummaryHTML += `
             <div class="cart-item-container js-cart-item-container-${
               matchingProduct.id
@@ -160,24 +161,22 @@ function quantityInputLimit(newQuantity, productId) {
   }
 }
 
+const jsUpdateLink = document.querySelectorAll(".js-update-link")
+const saveQuantityLink = document.querySelectorAll(".save-quantity-link")
+const jsQuantityInput = document.querySelectorAll(".js-quantity-input")
+const jsDeleteLink = document.querySelectorAll(".js-delete-link")
+
+
 // update item link
-document.querySelectorAll(".js-update-link").forEach((link) => {
-  link.addEventListener("click", () => addIsEditingQuantityClass(link))
-});
+jsUpdateLink.forEach(link => link.addEventListener("click", () => addIsEditingQuantityClass(link)))
 
 // save link
-document.querySelectorAll(".save-quantity-link").forEach((link) => {
-  link.addEventListener("click", () => handleSaveClick(link))
-});
+saveQuantityLink.forEach(link => link.addEventListener("click", () => handleSaveClick(link)))
 
 // updating quantity by ENTER key in the 'quantity input'
-document.querySelectorAll(".js-quantity-input").forEach((link) => {
-  link.addEventListener("keypress", (event) => handleQuantityInputOnEnter(event, link));
-});
+jsQuantityInput.forEach(link => link.addEventListener("keypress", event => handleQuantityInputOnEnter(event, link)))
 
 // delete cart item link
-document.querySelectorAll(".js-delete-link").forEach((link) => {
-  link.addEventListener("click", () => deleteCartItem(link));
-});
+jsDeleteLink.forEach(link => link.addEventListener("click", () => deleteCartItem(link)) );
 
 updateCheckoutQuantity(checkoutQuantityEl);

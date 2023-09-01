@@ -6,6 +6,7 @@ const productsGrid = document.querySelector(".js-products-grid"); // in that we 
 const cartQuantityElement = document.querySelector(".js-cart-quantity")
 
 let productsHTML = ""; // this will have all the html that we are going to dynamically generate
+let timerId //  for clearing the setTimer for "added" message after add to cart click
 
 // looping products array to dynamically generate html for rendering
 products.forEach((product) => {
@@ -66,7 +67,8 @@ products.forEach((product) => {
 
 productsGrid.innerHTML = productsHTML;
 
-let timerId //  for clearing the setTimer for "added" message after add to cart click
+const jsAddToCartButtons = document.querySelectorAll(".js-add-to-cart")
+
 
 function updateCartQuantity(htmlElment) {
   let cartQuantity = 0; // total items in the cart calculator
@@ -76,29 +78,31 @@ function updateCartQuantity(htmlElment) {
     //DOM for cart total quantity
     htmlElment.textContent = cartQuantity;
 }
+function addedMessageTimer(productId) {
+  clearTimeout(timerId) // clearing the previous timer
 
-function addedMessageTimer(addedMessage) {
-  clearTimeout(timerId)
-    timerId = setTimeout(() => { // remove the "Added" message after 2 seconds
-      addedMessage.classList.remove('added-to-cart-visible')
-    }, 2000);
+  const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`)
+  addedMessage.classList.add('added-to-cart-visible')
+
+  timerId = setTimeout(() => { // remove the "Added" message after 2 seconds
+    addedMessage.classList.remove('added-to-cart-visible')
+  }, 2000);
+}
+function handleAddToCartButtonClick(button) {
+  // to find the id of the product related to the button we used html attribute 'data- '
+  const {productId} = button.dataset // destructured productId from button.dataset
+
+  addToCart(productId)
+  updateCartQuantity(cartQuantityElement) // dom of cart quantity
+
+  // For 'added' message when adding items to cart 
+  addedMessageTimer(productId)
 }
 
-document.querySelectorAll(".js-add-to-cart") // selecting all of the 'add to cart' buttons
-  .forEach((button) => { // looping those selected buttons
-    button.addEventListener("click", () => { // setting up click event listener on all of the 'add to cart' buttons
-      // to find the id of the product related to the button we used html attribute 'data- '
-      const {productId} = button.dataset
+// selecting all of the 'add to cart' buttons
+// and setting up click event listener on all of the 'add to cart' buttons
 
-      addToCart(productId)
-      updateCartQuantity(cartQuantityElement)
-
-      // For 'added' message when adding items to cart 
-      const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`)
-      addedMessage.classList.add('added-to-cart-visible')
-      addedMessageTimer(addedMessage)
-    });
-});
+jsAddToCartButtons.forEach(button => button.addEventListener("click", () => handleAddToCartButtonClick(button)))
 
 // dom for indicating cart quantity upon page load
 updateCartQuantity(cartQuantityElement)
