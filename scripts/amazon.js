@@ -1,12 +1,12 @@
-import {cart, addToCart} from "../data/cart.js";
-import {products} from "../data/products.js"; 
-import {formatCurrency} from "./utils/money.js";
+import { cart, addToCart } from "../data/cart.js";
+import { products } from "../data/products.js";
+import { formatCurrency } from "./utils/money.js";
 
 const productsGrid = document.querySelector(".js-products-grid"); // in that we will render all of our products
-const cartQuantityElement = document.querySelector(".js-cart-quantity")
+const cartQuantityElement = document.querySelector(".js-cart-quantity");
 
 let productsHTML = ""; // this will have all the html that we are going to dynamically generate
-let timerId //  for clearing the setTimer for "added" message after add to cart click
+let timerId; //  for clearing the setTimer for "added" message after add to cart click
 
 // looping products array to dynamically generate html for rendering
 products.forEach((product) => {
@@ -67,42 +67,44 @@ products.forEach((product) => {
 
 productsGrid.innerHTML = productsHTML;
 
-const jsAddToCartButtons = document.querySelectorAll(".js-add-to-cart")
-
+const jsAddToCartButtons = document.querySelectorAll(".js-add-to-cart");
 
 function updateCartQuantity(htmlElment) {
   let cartQuantity = 0; // total items in the cart calculator
-    cart.forEach((cartItem) => {
-      cartQuantity += cartItem.quantity;
-    });
-    //DOM for cart total quantity
-    htmlElment.textContent = cartQuantity;
+  cart.forEach((cartItem) => {
+    cartQuantity += cartItem.quantity;
+  });
+  //DOM for cart total quantity
+  htmlElment.textContent = cartQuantity;
 }
 function addedMessageTimer(productId) {
-  clearTimeout(timerId) // clearing the previous timer
+  clearTimeout(timerId); // clearing the previous timer
 
-  const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`)
-  addedMessage.classList.add('added-to-cart-visible')
+  const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+  addedMessage.classList.add("added-to-cart-visible");
 
-  timerId = setTimeout(() => { // remove the "Added" message after 2 seconds
-    addedMessage.classList.remove('added-to-cart-visible')
+  timerId = setTimeout(() => {
+    // remove the "Added" message after 2 seconds
+    addedMessage.classList.remove("added-to-cart-visible");
   }, 2000);
 }
 function handleAddToCartButtonClick(button) {
   // to find the id of the product related to the button we used html attribute 'data- '
-  const {productId} = button.dataset // destructured productId from button.dataset
+  const { productId } = button.dataset; // destructured productId from button.dataset
 
-  addToCart(productId)
-  updateCartQuantity(cartQuantityElement) // dom of cart quantity
+  addToCart(productId);
+  updateCartQuantity(cartQuantityElement); // dom of cart quantity
 
-  // For 'added' message when adding items to cart 
-  addedMessageTimer(productId)
+  // For 'added' message when adding items to cart
+  addedMessageTimer(productId);
 }
 
 // selecting all of the 'add to cart' buttons
 // and setting up click event listener on all of the 'add to cart' buttons
 
-jsAddToCartButtons.forEach(button => button.addEventListener("click", () => handleAddToCartButtonClick(button)))
+jsAddToCartButtons.forEach((button) =>
+  button.addEventListener("click", () => handleAddToCartButtonClick(button))
+);
 
 // dom for indicating cart quantity upon page load
-updateCartQuantity(cartQuantityElement)
+updateCartQuantity(cartQuantityElement);
